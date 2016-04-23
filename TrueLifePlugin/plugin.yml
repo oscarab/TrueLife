@@ -1,0 +1,9 @@
+name: TrueLife
+main: trueLife.TrueLife
+version: 0.2.1
+author: oscarab
+depend: [EasyScoreboards]
+commands:
+  truelife:
+    description: main.command
+    usage: /truelife help

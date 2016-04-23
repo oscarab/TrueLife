@@ -1,0 +1,80 @@
+#写在前面：这里使用颜色代码要用 §
+#变量：<player>玩家名字 <sleepy>疲劳值 <thirsty>口渴值 <infected>病毒值
+#是否开启各类数值
+Enable:
+#疲劳值
+  sleepy: true
+#口渴值
+  thirsty: true
+#病毒值
+  infected: true
+#难度
+Difficult:
+#每多少秒增加1点疲劳值
+  sleepy: 12
+#每多少秒增加1点口渴值
+  thirsty: 9
+Sleep:
+#是否开启睡觉的效果
+  enable: true
+#睡觉对数值造成的效果 sleepy和thirsty和infected
+  effect:
+    sleepy: -100
+#消息提醒
+  message:
+  - '<player>睡了个好觉'
+  - '你当前的疲劳值为<sleepy>'
+DamagedBYMonster:
+#是否开启被怪物攻击的效果
+  enable: true
+#被怪物攻击对数值造成的效果 sleepy和thirsty和infected
+  effect:
+    infected: +10
+#消息提醒
+  message:
+  - '<player>受到了怪物病毒的感染'
+  - '你当前的病毒值为<infected>'
+#自定义消息提醒
+#格式： 所需到达的数值:消息
+Message:
+#疲劳值
+  sleepy:
+    - 50:§a<player>，你现在的疲劳值为§b50
+#口渴值
+  thirsty:
+    - 50:§a<player>，你现在的口渴值为§b50
+#病毒值
+  infected:
+    - 50:§a<player>，你现在的病毒值为§b50
+#自定义记分板
+ScoreBoard:
+#是否开启
+  Enable: true
+  #记分板标题
+  displayname: §b§l<player>§a的状况
+  #记分板各行自定义
+  score:
+    - §e疲劳值：
+    - §a<sleepy>/100
+    - §e口渴值：
+    - §b<thirsty>/100
+    - §e病毒值：
+    - §c<infected>/100
+#自定义效果
+#格式： 效果名称,等级 表达式
+#表达式：>或<或=某数值
+Effect:
+#疲劳值
+  sleepy:
+    - SLOW,0 >50
+#口渴值
+  thirsty:
+    - SLOW,0 >50
+#病毒值
+  infected:
+    - SLOW,0 >50
+#SPEED(速度提升),SLOW(缓慢),FAST_DIGGING（急迫）,SLOW_DIGGING(挖掘疲劳),INCREASE_DAMAGE(伤害提升)
+# HEAL(瞬间治疗),HARM(瞬间伤害),JUMP(跳跃提升),CONFUSION(反胃),REGENERATION（生命恢复）
+# DAMAGE_RESISTANCE（抗性）,FIRE_RESISTANCE(防火),WATER_BREATHING（水下呼吸）,INVISIBILITY（隐身）
+# BLINDNESS(失明)，NIGHT_VISION（夜视）,HUNGER（饥饿），WEAKNESS（虚弱）,POISON（中毒）
+# WITHER（凋零）,HEALTH_BOOST（生命提升）,ABSORPTION(伤害吸收),SATURATION(饱和)
