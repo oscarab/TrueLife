@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Items {
 public static List<ItemStack> items = new ArrayList<>();
@@ -22,7 +23,7 @@ public static HashMap<ItemStack,Boolean> use = new HashMap<>();
 public static HashMap<ItemStack,Integer> sleepy = new HashMap<>();
 public static HashMap<ItemStack,Integer> thirsty = new HashMap<>();
 public static HashMap<ItemStack,Integer> infected = new HashMap<>();
-public static HashMap<ItemStack,PotionEffect> potion = new HashMap<>();
+public static HashMap<ItemStack,List<PotionEffect>> potion = new HashMap<>();
 
 public static HashMap<ItemStack,String> shape = new HashMap<>();
 public static HashMap<ItemStack,String> shapeid = new HashMap<>();
@@ -59,6 +60,15 @@ public static void saveItems(){
 			thirsty.put(item, it.getInt(arg+".effect.thirsty"));
 			infected.put(item, it.getInt(arg+".effect.infected"));
 		}
+		if(it.getString(arg+".effect.potion")!=null){
+			List<String> args = it.getStringList(arg+".effect.potion");
+			List<PotionEffect> pot = new ArrayList<>();
+			for(String po :args){
+				String[] ab = po.split(",");
+				pot.add(new PotionEffect(PotionEffectType.getByName(ab[0]),Integer.parseInt(ab[1]),Integer.parseInt(ab[2])));
+			}
+			potion.put(item, pot);
+		}
 	}
 	createItems();
 }
@@ -79,7 +89,13 @@ public static void createItems(){
 		  }
 		  for(int a=0;a<id.length;a++){
 			  String[] k = id[a].split(":");
-		  be.setIngredient(k[0].charAt(0), Material.getMaterial(k[1]));
+			  int data = 0;
+			  String idname = k[1];
+			  if(idname.contains("-")){
+				  data = Integer.parseInt(idname.split("-")[1]);
+				  idname = idname.split("-")[0];
+			  }
+		  be.setIngredient(k[0].charAt(0), Material.getMaterial(idname),data);
 		  }
 		  Bukkit.getServer().addRecipe(be);
 	}
@@ -102,13 +118,20 @@ public static List<String> getMsg(ItemStack item){
 	return list;
 }
 public static Integer getEffect(ItemStack item,String type){
+	int arg = item.getAmount();
 	item.setAmount(1);
 	if(type.equalsIgnoreCase("sleepy")){
-		return sleepy.get(item);
+		int e1 = sleepy.get(item);
+		item.setAmount(arg);
+		return e1;
 	}else if(type.equalsIgnoreCase("thirsty")){
-		return thirsty.get(item);
+		int e2 = thirsty.get(item);
+		item.setAmount(arg);
+		return e2;
 	}else if(type.equalsIgnoreCase("infected")){
-		return infected.get(item);
+		int e3 = infected.get(item);
+		item.setAmount(arg);
+		return e3;
 	}else{
 		return 0;
 	}
@@ -123,5 +146,13 @@ public static boolean isEat(ItemStack item){
 	}
 	item.setAmount(arg);
 	return false;
+}
+public static List<PotionEffect> getPotion(ItemStack item){
+	List<PotionEffect> arg = new ArrayList<>();
+	int am = item.getAmount();
+	item.setAmount(1);
+	arg = potion.get(item)==null? arg:potion.get(item);
+	item.setAmount(am);
+	return arg;
 }
 }

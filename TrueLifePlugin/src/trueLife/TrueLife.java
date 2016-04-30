@@ -51,7 +51,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 		  PlayerData.Join(p);
 	  }
 	startLife();
-	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.1");
+	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.2");
   }
   public void onDisable(){
 		Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
@@ -83,7 +83,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  return true;
 			  }
 		  }else if(args.length == 1&&args[0].equalsIgnoreCase("help")){
-			  sender.sendMessage("§b作者：oscarab  版本：v0.2.1");
+			  sender.sendMessage("§b作者：oscarab  版本：v0.2.2");
 			  sender.sendMessage("§b§l帮助：");
 			  sender.sendMessage("§2疲劳值：随时间推移不断增加");
 			  sender.sendMessage("§2口渴值：随时间推移不断增加");

@@ -10,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import trueLife.Board;
 import data.ConfigData;
@@ -24,29 +25,13 @@ public class ItemListener implements Listener{
 			  ItemStack item = p.getItemInHand();
 			  if(Items.isItems(item)){
 		        	 if(Items.isEat(item)){return;}
-					  int am = item.getAmount();
-					  if(am==1){
-					  p.setItemInHand(new ItemStack(Material.AIR));
-					  }else if(am>1){
-						  item.setAmount(am-1);
-					  }
-					if(ConfigData.sleepy){
-						  PlayerData.changeData(p, "sleepy", -Items.getEffect(item, "sleepy"));
-				      	}
-			      	if(ConfigData.thirsty){
-					  PlayerData.changeData(p, "thirsty", -Items.getEffect(item, "thirsty"));
-			      	}
-			      	if(ConfigData.infected){
-					  PlayerData.changeData(p, "infected", -Items.getEffect(item, "infected"));
-			      	}
-			      	item.setAmount(am-1);
-			               new Board(p).update();
-							  List<String> msg = Items.getMsg(item);
-							  for(int i=0;i<msg.size();i++){
-								  String arg = Items.getMsg(item).get(i);
-							  p.sendMessage(ConfigData.replaceAll(arg, p));
+					ItemAction(item,p);
+							  int am = item.getAmount();
+							  if(am==1){
+							  p.setItemInHand(new ItemStack(Material.AIR));
+							  }else if(am>1){
+								  item.setAmount(am-1);
 							  }
-
 			  }
 		  }
 	  }
@@ -55,21 +40,28 @@ public class ItemListener implements Listener{
 		  Player p = e.getPlayer();
 		  ItemStack item = p.getItemInHand();
         	 if(Items.isEat(item)){
-			      	if(ConfigData.sleepy){
-					  PlayerData.changeData(p, "sleepy", -Items.getEffect(item, "sleepy"));
-			      	}
-			      	if(ConfigData.thirsty){
-					  PlayerData.changeData(p, "thirsty", -Items.getEffect(item, "thirsty"));
-			      	}
-			      	if(ConfigData.infected){
-					  PlayerData.changeData(p, "infected", -Items.getEffect(item, "infected"));
-			      	}
-			        	new Board(p).update();
+					ItemAction(item,p);
+        	 }
+		  }
+	  void ItemAction(ItemStack item,Player p){
+		  if(ConfigData.sleepy){
+			  PlayerData.changeData(p, "sleepy", -Items.getEffect(item, "sleepy"));
+	      	}
+      	if(ConfigData.thirsty){
+		  PlayerData.changeData(p, "thirsty", -Items.getEffect(item, "thirsty"));
+      	}
+      	if(ConfigData.infected){
+		  PlayerData.changeData(p, "infected", -Items.getEffect(item, "infected"));
+      	}
+               new Board(p).update();
 				  List<String> msg = Items.getMsg(item);
 				  for(int i=0;i<msg.size();i++){
 					  String arg = Items.getMsg(item).get(i);
 				  p.sendMessage(ConfigData.replaceAll(arg, p));
 				  }
-        	 }
-		  }
+		 List<PotionEffect> arg = Items.getPotion(item);
+		 for(PotionEffect a:arg){
+			 p.addPotionEffect(a);
+		 }
+	  }
 }
