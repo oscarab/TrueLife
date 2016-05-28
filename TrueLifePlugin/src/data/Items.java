@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -28,6 +29,15 @@ public static HashMap<ItemStack,List<PotionEffect>> potion = new HashMap<>();
 public static HashMap<ItemStack,String> shape = new HashMap<>();
 public static HashMap<ItemStack,String> shapeid = new HashMap<>();
 public static void saveItems(){
+	items.clear();
+	msg.clear();
+	use.clear();
+	sleepy.clear();
+	thirsty.clear();
+	infected.clear();
+	potion.clear();
+	shape.clear();
+	shapeid.clear();
 	File file = new File("./plugins/TrueLife/items.yml");
 	YamlConfiguration it = YamlConfiguration.loadConfiguration(file);
 	Iterator<String> itn = it.getKeys(false).iterator();
@@ -73,6 +83,7 @@ public static void saveItems(){
 	createItems();
 }
 public static void createItems(){
+	Bukkit.getServer().resetRecipes();
 	for(int i=0;i<items.size();i++){
 		ItemStack item = items.get(i);
 		if(shape.get(item)==null){

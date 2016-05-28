@@ -51,7 +51,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 		  PlayerData.Join(p);
 	  }
 	startLife();
-	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.2");
+	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.3");
   }
   public void onDisable(){
 		Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
@@ -83,7 +83,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  return true;
 			  }
 		  }else if(args.length == 1&&args[0].equalsIgnoreCase("help")){
-			  sender.sendMessage("§b作者：oscarab  版本：v0.2.2");
+			  sender.sendMessage("§b作者：oscarab  版本：v0.2.3");
 			  sender.sendMessage("§b§l帮助：");
 			  sender.sendMessage("§2疲劳值：随时间推移不断增加");
 			  sender.sendMessage("§2口渴值：随时间推移不断增加");
@@ -93,6 +93,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 			  sender.sendMessage("§b/truelife set <玩家> <sleepy或thirsty或infected> <数值> 改变玩家的身体状况");
 			  }
 			  sender.sendMessage("§b/truelife board <true|false>    显示或隐藏计分板");
+			  sender.sendMessage("§b/truelife reload    重载配置文件");
 			  return true;
 		  }else if(args[0].equalsIgnoreCase("set") && args.length == 4){
 			  if(!sender.hasPermission("truelife.set")){
@@ -180,6 +181,15 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  sender.sendMessage("该命令只能玩家使用！");
 				  return true;
 			  }
+		  }else if(args.length==1&&args[0].equalsIgnoreCase("reload")){
+			  if(!sender.hasPermission("truelife.reload")){
+				  sender.sendMessage("§4你没有使用该命令的权限！");
+				  return true;
+			  }
+			  ConfigData.saveConfig();
+			  Items.saveItems();
+			  sender.sendMessage("§c重载成功！");
+			  return true;
 		  }else{
 			  sender.sendMessage("§b请输入/truelife help 查看帮助！");
 			  return true;

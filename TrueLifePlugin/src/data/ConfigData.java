@@ -31,6 +31,24 @@ public class ConfigData {
   public static HashMap<String,Integer> sleepy_effect = new HashMap<>();
   public static HashMap<String,Integer> monster_effect = new HashMap<>();
   public static void saveConfig(){
+	  scoreboard = true;
+	  sleepy = true;
+	  thirsty = true;
+	  infected = true;
+	  dsleepy = 12;
+	  dthirsty = 9;
+	  msgsleepy.clear();
+	  msgthirsty.clear();
+	  msginfected.clear();
+	  boardname=null;
+	  scorelist.clear();
+	  esleepy.clear();
+	  ethirsty.clear();
+	  einfected.clear();
+	  active_enable.clear();
+	  active_msg.clear();
+	  sleepy_effect.clear();
+	  monster_effect.clear();
 		File file = new File("./plugins/TrueLife/config.yml");
 		YamlConfiguration fd = YamlConfiguration.loadConfiguration(file);
 		scoreboard = fd.getBoolean("ScoreBoard.Enable");

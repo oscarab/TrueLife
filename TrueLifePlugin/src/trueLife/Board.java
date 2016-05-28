@@ -28,11 +28,7 @@ public class Board {
 	  list.add(ConfigData.boardname.replace("<player>", p.getName()));
 	  for(int i=0;i<ConfigData.scorelist.size();i++){
 		  String arg = ConfigData.scorelist.get(i);
-		  arg=arg.replace("<sleepy>", ""+sleepy);
-		  arg=arg.replace("<thirsty>", ""+thirsty);
-		  arg=arg.replace("<infected>", ""+infected);
-		  arg=arg.replace("<player>", p.getName());
-		  list.add(arg);
+		  list.add(ConfigData.replaceAll(arg, p));
 	  }
 	  String[] score = new String[list.size()];
 	  for(int i=0;i<score.length;i++){
