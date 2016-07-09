@@ -13,6 +13,7 @@ public class ConfigData {
   public static boolean sleepy = true;
   public static boolean thirsty = true;
   public static boolean infected = true;
+  public static boolean clear_data = true;
   public static int dsleepy = 12;
   public static int dthirsty = 9;
   public static List<String> msgsleepy = new ArrayList<>();
@@ -35,6 +36,7 @@ public class ConfigData {
 	  sleepy = true;
 	  thirsty = true;
 	  infected = true;
+	  clear_data = true;
 	  dsleepy = 12;
 	  dthirsty = 9;
 	  msgsleepy.clear();
@@ -55,6 +57,7 @@ public class ConfigData {
 		sleepy = fd.getBoolean("Enable.sleepy");
 		thirsty = fd.getBoolean("Enable.thirsty");
 		infected = fd.getBoolean("Enable.infected");
+		clear_data = fd.getBoolean("After_Die.clear_data");
 		dsleepy = fd.getInt("Difficult.sleepy");
 		dthirsty = fd.getInt("Difficult.thirsty");
 		msgsleepy=fd.getStringList("Message.sleepy");

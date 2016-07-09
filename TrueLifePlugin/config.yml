@@ -14,6 +14,9 @@ Difficult:
   sleepy: 12
 #每多少秒增加1点口渴值
   thirsty: 9
+After_Die:
+#死亡后是否清除三种数值
+  clear_data: true
 Sleep:
 #是否开启睡觉的效果
   enable: true

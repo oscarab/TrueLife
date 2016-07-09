@@ -71,9 +71,11 @@ public void onDeath(PlayerDeathEvent evt){
 		 if(evt.getEntityType() == EntityType.PLAYER){
 			 Player p = evt.getEntity();
 			 String name = p.getName();
+			 if(ConfigData.clear_data){
 			PlayerData.changeData(p, "sleepy", PlayerData.getData(name, "sleepy"));
 			PlayerData.changeData(p, "thirsty", PlayerData.getData(name, "thirsty"));
 			PlayerData.changeData(p, "infected", PlayerData.getData(name, "infected"));
+			 }
       	new Board(p).update();
 		 }
 }

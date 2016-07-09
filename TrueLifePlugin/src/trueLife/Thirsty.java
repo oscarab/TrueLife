@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import data.ConfigData;
 import data.PlayerData;
 
-public class Thirsty extends java.util.TimerTask{
+public class Thirsty implements Runnable{
 	public void run() {
 		Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
 		while(plist.hasNext()){

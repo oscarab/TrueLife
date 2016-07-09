@@ -3,8 +3,6 @@ package trueLife;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Timer;
-
 import listener.ItemListener;
 import listener.PlayerListen;
 
@@ -51,7 +49,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 		  PlayerData.Join(p);
 	  }
 	startLife();
-	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.3");
+	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.4");
   }
   public void onDisable(){
 		Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
@@ -83,7 +81,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  return true;
 			  }
 		  }else if(args.length == 1&&args[0].equalsIgnoreCase("help")){
-			  sender.sendMessage("§b作者：oscarab  版本：v0.2.3");
+			  sender.sendMessage("§b作者：oscarab  版本：v0.2.4");
 			  sender.sendMessage("§b§l帮助：");
 			  sender.sendMessage("§2疲劳值：随时间推移不断增加");
 			  sender.sendMessage("§2口渴值：随时间推移不断增加");
@@ -198,14 +196,13 @@ public class TrueLife extends JavaPlugin implements Listener{
 	return false;
   }
   public void startLife(){
-			Timer timer = new Timer();
 			if(ConfigData.sleepy){
-			timer.scheduleAtFixedRate(new Sleep(), 1000, ConfigData.dsleepy*1000);
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Sleep(),0,ConfigData.dsleepy*20);
 			}
 			if(ConfigData.thirsty){
-			timer.scheduleAtFixedRate(new Thirsty(), 1000, ConfigData.dthirsty*1000);
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Thirsty(),0,ConfigData.dthirsty*20);
 			}
-			   Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Effect(),0,20);
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Effect(),0,20);
 			   
   }
 }
