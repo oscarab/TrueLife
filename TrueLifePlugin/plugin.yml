@@ -1,6 +1,6 @@
 name: TrueLife
 main: trueLife.TrueLife
-version: 0.2.4
+version: 0.2.5
 author: oscarab
 depend: [EasyScoreboards]
 commands:

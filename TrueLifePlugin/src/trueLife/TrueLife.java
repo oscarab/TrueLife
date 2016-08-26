@@ -3,6 +3,7 @@ package trueLife;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+
 import listener.ItemListener;
 import listener.PlayerListen;
 
@@ -16,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import data.ConfigData;
 import data.Items;
+import data.MysqlStorage;
 import data.PlayerData;
 
 public class TrueLife extends JavaPlugin implements Listener{
@@ -42,6 +44,21 @@ public class TrueLife extends JavaPlugin implements Listener{
 	getServer().getPluginManager().registerEvents(new PlayerListen(), this);
 	getServer().getPluginManager().registerEvents(this, this);
 	ConfigData.saveConfig();
+	if(!ConfigData.version.equalsIgnoreCase("0.2.5")){
+		this.saveDefaultConfig();
+		ConfigData.saveConfig();
+		getLogger().info("配置文件更新成功！");
+	}
+	if(ConfigData.storage.equalsIgnoreCase("sql")){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+	        getLogger().info("数据库驱动完成！");
+			new MysqlStorage().createTable();
+			
+		} catch (ClassNotFoundException e) {
+	        getLogger().info("数据库驱动失败！");
+		} 
+	}
 	Items.saveItems();
 	Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
 	while(plist.hasNext()){
@@ -49,7 +66,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 		  PlayerData.Join(p);
 	  }
 	startLife();
-	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.4");
+	getLogger().info("成功运行！  作者：oscarab  版本：v0.2.5");
   }
   public void onDisable(){
 		Iterator<? extends Player> plist = Bukkit.getOnlinePlayers().iterator();
@@ -81,15 +98,14 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  return true;
 			  }
 		  }else if(args.length == 1&&args[0].equalsIgnoreCase("help")){
-			  sender.sendMessage("§b作者：oscarab  版本：v0.2.4");
+			  sender.sendMessage("§b作者：oscarab  版本：v0.2.5");
 			  sender.sendMessage("§b§l帮助：");
 			  sender.sendMessage("§2疲劳值：随时间推移不断增加");
 			  sender.sendMessage("§2口渴值：随时间推移不断增加");
 			  sender.sendMessage("§2病毒值：被怪物攻击时或吃腐肉会增加");
 			  sender.sendMessage("§b/truelife 查看身体状况");
-			  if(sender.hasPermission("truelife.set")){
 			  sender.sendMessage("§b/truelife set <玩家> <sleepy或thirsty或infected> <数值> 改变玩家的身体状况");
-			  }
+              sender.sendMessage("§b/truelife down <玩家> <sleepy或thirsty或infected> <数值> 降低玩家的某个数值");
 			  sender.sendMessage("§b/truelife board <true|false>    显示或隐藏计分板");
 			  sender.sendMessage("§b/truelife reload    重载配置文件");
 			  return true;
@@ -148,8 +164,7 @@ public class TrueLife extends JavaPlugin implements Listener{
 				  sender.sendMessage("§4不能设置这个数值！");
 				  return true;
 			  }
-		  }
-		  else if(args[0].equalsIgnoreCase("board")&&args.length==2){
+		  }else if(args[0].equalsIgnoreCase("board")&&args.length==2){
 			  if(!sender.hasPermission("truelife.enable")){
 				  sender.sendMessage("§4你没有使用该命令的权限！");
 				  return true;
@@ -188,6 +203,58 @@ public class TrueLife extends JavaPlugin implements Listener{
 			  Items.saveItems();
 			  sender.sendMessage("§c重载成功！");
 			  return true;
+		  }else if(args.length==4 && args[0].equalsIgnoreCase("down")){
+			  if(!sender.hasPermission("truelife.down")){
+				  sender.sendMessage("§4你没有使用该命令的权限！");
+				  return true;
+			  }
+			  Player p = Bukkit.getPlayer(args[1]);
+			  if(p!=null){
+				  switch(args[2]){
+				  case "sleepy":{
+					  if(ConfigData.sleepy){
+						  PlayerData.changeData(p, args[2], Integer.parseInt(args[3]));
+						  sender.sendMessage("§b成功降低"+p.getName()+"的疲劳值"+args[3]+"点");
+						  p.sendMessage("§a你的疲劳值下降了"+args[3]+"点");
+						  new Board(p).update();
+						  return true;
+					  }else{
+						  sender.sendMessage("§4该数值未开启！请在配置文件开启！"); 
+						  return true;
+					  }
+				  }
+				  case "thirsty":{
+					  if(ConfigData.thirsty){
+						  PlayerData.changeData(p, args[2], Integer.parseInt(args[3]));
+						  sender.sendMessage("§b成功降低"+p.getName()+"的口渴值"+args[3]+"点");
+						  p.sendMessage("§a你的口渴值下降了"+args[3]+"点");
+						  new Board(p).update();
+						  return true;
+					  }else{
+						  sender.sendMessage("§4该数值未开启！请在配置文件开启！"); 
+						  return true;
+					  }
+				  }
+				  case "infected":{
+					  if(ConfigData.infected){
+						  PlayerData.changeData(p, args[2], Integer.parseInt(args[3]));
+						  sender.sendMessage("§b成功降低"+p.getName()+"的病毒值"+args[3]+"点");
+						  p.sendMessage("§a你的病毒值下降了"+args[3]+"点");
+						  new Board(p).update();
+						  return true;
+					  }else{
+						  sender.sendMessage("§4该数值未开启！请在配置文件开启！"); 
+						  return true;
+					  }
+				  }
+				  default:{
+					  sender.sendMessage("§4你只能设置玩家的sleepy,thirsty,infected的数值！");
+					  return true;
+				  }
+				  }
+			  }else{
+				  sender.sendMessage("§4此玩家不在线！");
+			  }
 		  }else{
 			  sender.sendMessage("§b请输入/truelife help 查看帮助！");
 			  return true;

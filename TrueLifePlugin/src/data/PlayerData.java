@@ -15,29 +15,50 @@ private static HashMap<String,Integer> thirsty =  new HashMap<String, Integer>()
 private static HashMap<String,Integer> infected = new HashMap<String, Integer>();
 
 public static void Join(Player p){
+	String name = p.getName();
+  if(ConfigData.storage.equalsIgnoreCase("sql")){
+		MysqlStorage sql = new MysqlStorage();
+		if(sql.isFirst(name)){
+			sleepy.put(name, 0);
+			thirsty.put(name, 0);
+			infected.put(name, 0);
+		}else{
+			sleepy.put(name, sql.getData(name, "Sleepy"));
+			thirsty.put(name, sql.getData(name, "Thirsty"));
+			infected.put(name, sql.getData(name, "Infected"));
+		}
+		sql.stop();
+	}else{
 	File file = new File("./plugins/TrueLife/player.yml");
 	YamlConfiguration fd = YamlConfiguration.loadConfiguration(file);
-	String name = p.getName();
 	if(fd.getString(name)==null){
 		sleepy.put(name, 0);
 		thirsty.put(name, 0);
 		infected.put(name, 0);
-	}
+	}else{
 	sleepy.put(name, fd.getInt(name+".sleepy"));
 	thirsty.put(name, fd.getInt(name+".thirsty"));
 	infected.put(name, fd.getInt(name+".infected"));
+	}
+  }
 	new Board(p).openBoard();
 }
 public static void Quit(Player p){
+	String name = p.getName();
+	  if(ConfigData.storage.equalsIgnoreCase("sql")){
+			MysqlStorage sql = new MysqlStorage();
+			sql.insertData(name,sleepy.get(name), thirsty.get(name), infected.get(name));
+			sql.stop();
+	  }else{
 	File file = new File("./plugins/TrueLife/player.yml");
 	YamlConfiguration fd = YamlConfiguration.loadConfiguration(file);
-	String name = p.getName();
 	fd.set(name+".sleepy", sleepy.get(name));
 	fd.set(name+".thirsty", thirsty.get(name));
 	fd.set(name+".infected", infected.get(name));
 	try {
 		fd.save(file);
 	} catch (IOException e) {e.printStackTrace();}
+	  }
 	sleepy.remove(name);
 	thirsty.remove(name);
 	infected.remove(name);

@@ -31,6 +31,15 @@ public class ConfigData {
   public static HashMap<String,List<String>> active_msg= new HashMap<>();
   public static HashMap<String,Integer> sleepy_effect = new HashMap<>();
   public static HashMap<String,Integer> monster_effect = new HashMap<>();
+  
+  public static String version;
+  
+  public static String storage = "yml";
+  public static String sqlip;
+  public static String port;
+  public static String user;
+  public static String password;
+  public static String database;
   public static void saveConfig(){
 	  scoreboard = true;
 	  sleepy = true;
@@ -81,6 +90,14 @@ public class ConfigData {
 		monster_effect.put("sleepy", fd.getInt("DamagedBYMonster.effect.sleepy"));
 		monster_effect.put("thirsty", fd.getInt("DamagedBYMonster.effect.thirsty"));
 		monster_effect.put("infected", fd.getInt("DamagedBYMonster.effect.infected"));
+		
+		version = fd.getString("version")==null?"0.0.0":fd.getString("version");
+		storage = fd.getString("Storage.type");
+		sqlip = fd.getString("Storage.ip");
+		port = fd.getString("Storage.port");
+		user = fd.getString("Storage.user");
+		password = fd.getString("Storage.password");
+		database = fd.getString("Storage.database");
   }
   public static void sendMsg(Player p,String type,int points){
 	  if(type.equalsIgnoreCase("sleepy")){

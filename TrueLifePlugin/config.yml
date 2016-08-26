@@ -1,5 +1,20 @@
 #写在前面：这里使用颜色代码要用 §
 #变量：<player>玩家名字 <sleepy>疲劳值 <thirsty>口渴值 <infected>病毒值
+#版本 请勿随意更改
+version: 0.2.5
+Storage:
+  #储存类型：yml或sql 注意：更改此项时请把服务器关闭！
+  type: yml
+  #mysql的IP
+  ip: 127.0.0.1
+  #mysql的端口
+  port: 3306
+  #mysql的用户名
+  user: root
+  #mysql的密码
+  password: root
+  #mysql的数据库
+  database: test
 #是否开启各类数值
 Enable:
 #疲劳值
